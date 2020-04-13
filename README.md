@@ -5,6 +5,6 @@ this plugin remove some not used admin menu items.
   
 #roadmap
 
-[x] writhe the plugin template
-[x] adding the code to remove some admin menu items
-[ ] adding plugin settings page
+- [x] writhe the plugin template  
+- [x] adding the code to remove some admin menu items  
+- [ ] adding plugin settings page  
