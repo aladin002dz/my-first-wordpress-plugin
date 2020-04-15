@@ -25,6 +25,15 @@ function remove_admin_menus(){
 add_action( 'admin_menu', 'remove_admin_menus' );
 */
 
+function console_log($output, $with_script_tags = true) {
+    $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . 
+');';
+    if ($with_script_tags) {
+        $js_code = '<script>' . $js_code . '</script>';
+    }
+    echo $js_code;
+}
+
 function ramdev_init() {
 	register_setting( 'ramdev_settings', 'ramdev', 'ramdev_validate' );
 }
@@ -37,6 +46,9 @@ function ram_options_page() {
 			<h2><?php _e( 'Remove Admin Menus', 'ram' ); ?></h2>
 			<p><?php _e( 'This plugin helps you remove admin menus.', 'ram' ); ?></p>
 			<form method="POST" action="options.php">
+				<?php
+					settings_fields( 'ramdev_settings' );
+				?>
 				<table class="form-table">
 					<tbody>
 						<?php ramdev_do_options(); ?>
@@ -52,6 +64,9 @@ function ram_options_page() {
 
 function ramdev_do_options() {
 	$options = get_option( 'ramdev' );
+	console_log("reading options");
+	console_log($options);
+
 	ob_start();
 	?>
 		<tr valign="top"><th scope="row"><?php _e( 'What menus do you want to remove?', 'ram' ); ?></th>
@@ -83,7 +98,7 @@ function ramdev_services() {
 	return $services;
 }
 
-function my_plugindev_menu() {
+function ramdev_menu() {
 	add_submenu_page( 'options-general.php', __( 'Remove Admin Menus', 'ram' ), __( 'Remove Admin Menus', 'ram' ), 'administrator', 'ram_dev', 'ram_options_page' );
 }
-add_action( 'admin_menu', 'my_plugindev_menu' );
+add_action( 'admin_menu', 'ramdev_menu' );
