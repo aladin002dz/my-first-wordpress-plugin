@@ -3,27 +3,44 @@
 Plugin Name: Remove Admin Menus
 Description: this my first plugin.
 Author: Mahfoudh Arous
-Version: 0.1.5
+Version: 0.7
 Author URI: https://aladindev.com
 */
 
-/*
 function remove_admin_menus(){
-	 //remove_menu_page( 'index.php' );                  //Dashboard
-	 //remove_menu_page( 'jetpack' );                    //Jetpack* 
-	 remove_menu_page( 'edit.php' );                   //Posts
-	 //remove_menu_page( 'upload.php' );                 //Media
-	 remove_menu_page( 'edit.php?post_type=page' );    //Pages
-	 //remove_menu_page( 'edit-comments.php' );          //Comments
-	 remove_menu_page( 'themes.php' );                 //Appearance
-	 //remove_menu_page( 'plugins.php' );                //Plugins
-	 remove_menu_page( 'users.php' );                  //Users
-	 //remove_menu_page( 'tools.php' );                  //Tools
-	 //remove_menu_page( 'options-general.php' );        //Settings
-   }
+	$options = get_option( 'ramdev' );
+
+	if ( isset( $options['dashboard'] ) ) { 
+		remove_menu_page( 'index.php' );
+	}
+	if ( isset( $options['posts'] ) ) { 
+		remove_menu_page( 'edit.php' );
+	}
+	if ( isset( $options['media'] ) ) { 
+		remove_menu_page( 'upload.php' );
+	}
+	if ( isset( $options['pages'] ) ) { 	
+		remove_menu_page( 'edit.php?post_type=page' );
+	}
+	if ( isset( $options['comments'] ) ) { 
+		remove_menu_page( 'edit-comments.php' );
+	}
+	if ( isset( $options['appearence'] ) ) { 
+		remove_menu_page( 'themes.php' );
+	}
+	if ( isset( $options['plugins'] ) ) { 
+		remove_menu_page( 'plugins.php' );
+	}
+	if ( isset( $options['users'] ) ) { 
+		remove_menu_page( 'users.php' );
+	}
+	if ( isset( $options['tools'] ) ) { 
+		remove_menu_page( 'tools.php' );
+	}
+}
 
 add_action( 'admin_menu', 'remove_admin_menus' );
-*/
+
 
 /* a function to write in the console */
 function console_log($output, $with_script_tags = true) {
@@ -83,8 +100,50 @@ function ramdev_do_options() {
 						$value = $service['value'];
 						echo '<label><input type="checkbox" name="ramdev[' . $value . '] value="1" ';
 						switch ($value) {
+							case 'dashboard' :
+								if ( isset( $options['dashboard'] ) ) { 
+									checked( 'on', $options['dashboard'] );
+								}
+								break;
+							case 'posts' :
+								if ( isset( $options['posts'] ) ) { 
+									checked( 'on', $options['posts'] );
+								}
+								break;
+							case 'media' :
+								if ( isset( $options['media'] ) ) { 
+									checked( 'on', $options['media'] );
+								}
+								break;
+							case 'pages' :
+								if ( isset( $options['pages'] ) ) { 
+									checked( 'on', $options['pages'] );
+								}
+								break;
+							case 'comments' :
+								if ( isset( $options['comments'] ) ) { 
+									checked( 'on', $options['comments'] );
+								}
+								break;
 							case 'appearence' :
-								if ( isset( $options['appearence'] ) ) { checked( 'on', $options['appearence'] ); }
+								if ( isset( $options['appearence'] ) ) { 
+									checked( 'on', $options['appearence'] );
+								}
+								break;
+							case 'plugins' :
+								if ( isset( $options['plugins'] ) ) { 
+									checked( 'on', $options['plugins'] );
+								}
+								break;
+							case 'users' :
+								if ( isset( $options['users'] ) ) { 
+									checked( 'on', $options['users'] );
+								}
+								break;
+							case 'tools' :
+								if ( isset( $options['tools'] ) ) { 
+									checked( 'on', $options['tools'] );
+								}
 								break;
 						}
 						echo '/> ' . esc_attr($label) . '</label><br />';
@@ -97,9 +156,41 @@ function ramdev_do_options() {
 
 function ramdev_services() {
 	$services = array(
+		'dashboard' => array(
+			'value' => 'dashboard',
+			'label' => __( 'Dashboard', 'ram' )
+		),
+		'posts' => array(
+			'value' => 'posts',
+			'label' => __( 'Posts', 'ram' )
+		),
+		'media' => array(
+			'value' => 'media',
+			'label' => __( 'Media', 'ram' )
+		),
+		'pages' => array(
+			'value' => 'pages',
+			'label' => __( 'Pages', 'ram' )
+		),
+		'comments' => array(
+			'value' => 'comments',
+			'label' => __( 'Comments', 'ram' )
+		),
 		'appearence' => array(
 			'value' => 'appearence',
 			'label' => __( 'Appearence', 'ram' )
+		),
+		'plugins' => array(
+			'value' => 'plugins',
+			'label' => __( 'Plugins', 'ram' )
+		),
+		'users' => array(
+			'value' => 'users',
+			'label' => __( 'Users', 'ram' )
+		),
+		'tools' => array(
+			'value' => 'tools',
+			'label' => __( 'Tools', 'ram' )
 		)
 	);
 	return $services;
