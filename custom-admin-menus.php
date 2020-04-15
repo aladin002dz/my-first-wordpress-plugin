@@ -3,7 +3,7 @@
 Plugin Name: Remove Admin Menus
 Description: this my first plugin.
 Author: Mahfoudh Arous
-Version: 0.1
+Version: 0.1.5
 Author URI: https://aladindev.com
 */
 
@@ -25,6 +25,7 @@ function remove_admin_menus(){
 add_action( 'admin_menu', 'remove_admin_menus' );
 */
 
+/* a function to write in the console */
 function console_log($output, $with_script_tags = true) {
     $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . 
 ');';
@@ -34,11 +35,15 @@ function console_log($output, $with_script_tags = true) {
     echo $js_code;
 }
 
+
+/* initiate the plugin settings -------------------------------------------*/
 function ramdev_init() {
 	register_setting( 'ramdev_settings', 'ramdev', 'ramdev_validate' );
 }
 add_action( 'admin_init', 'ramdev_init' );
 
+
+/* the plugin page --------------------------------------------------------*/
 function ram_options_page() {
 	?>
 		<div class="wrap">
@@ -62,6 +67,7 @@ function ram_options_page() {
 }
 
 
+/* display the options and checkbox list */
 function ramdev_do_options() {
 	$options = get_option( 'ramdev' );
 	console_log("reading options");
@@ -88,6 +94,7 @@ function ramdev_do_options() {
 	<?php
 }
 
+
 function ramdev_services() {
 	$services = array(
 		'appearence' => array(
@@ -98,6 +105,7 @@ function ramdev_services() {
 	return $services;
 }
 
+/* adding the access to the plugin on the admin panel */
 function ramdev_menu() {
 	add_submenu_page( 'options-general.php', __( 'Remove Admin Menus', 'ram' ), __( 'Remove Admin Menus', 'ram' ), 'administrator', 'ram_dev', 'ram_options_page' );
 }
