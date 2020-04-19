@@ -1,46 +1,12 @@
 <?php
 /*
 Plugin Name: Remove Admin Menus
+Plugin URI: https://github.com/aladin002dz/my-first-wordpress-plugin
 Description: this my first plugin.
 Author: Mahfoudh Arous
 Version: 0.7
 Author URI: https://aladindev.com
 */
-
-function remove_admin_menus(){
-	$options = get_option( 'ramdev' );
-
-	if ( isset( $options['dashboard'] ) ) { 
-		remove_menu_page( 'index.php' );
-	}
-	if ( isset( $options['posts'] ) ) { 
-		remove_menu_page( 'edit.php' );
-	}
-	if ( isset( $options['media'] ) ) { 
-		remove_menu_page( 'upload.php' );
-	}
-	if ( isset( $options['pages'] ) ) { 	
-		remove_menu_page( 'edit.php?post_type=page' );
-	}
-	if ( isset( $options['comments'] ) ) { 
-		remove_menu_page( 'edit-comments.php' );
-	}
-	if ( isset( $options['appearence'] ) ) { 
-		remove_menu_page( 'themes.php' );
-	}
-	if ( isset( $options['plugins'] ) ) { 
-		remove_menu_page( 'plugins.php' );
-	}
-	if ( isset( $options['users'] ) ) { 
-		remove_menu_page( 'users.php' );
-	}
-	if ( isset( $options['tools'] ) ) { 
-		remove_menu_page( 'tools.php' );
-	}
-}
-
-add_action( 'admin_menu', 'remove_admin_menus' );
-
 
 /* a function to write in the console */
 function console_log($output, $with_script_tags = true) {
@@ -53,14 +19,19 @@ function console_log($output, $with_script_tags = true) {
 }
 
 
-/* initiate the plugin settings -------------------------------------------*/
+/* initiate the plugin settings **********************************************************/
 function ramdev_init() {
 	register_setting( 'ramdev_settings', 'ramdev', 'ramdev_validate' );
 }
+/* 
+	hook the previous function to the action admin_menu
+	(Fires as an admin screen or script is being initialized) 
+	https://developer.wordpress.org/reference/hooks/admin_init/
+*/
 add_action( 'admin_init', 'ramdev_init' );
 
 
-/* the plugin page --------------------------------------------------------*/
+/* build the plugin settings page ***********************************************************/
 function ram_options_page() {
 	?>
 		<div class="wrap">
@@ -84,7 +55,7 @@ function ram_options_page() {
 }
 
 
-/* display the options and checkbox list */
+/* build the checkbox list, to be displayed into the setting pages */
 function ramdev_do_options() {
 	$options = get_option( 'ramdev' );
 	console_log("reading options");
@@ -153,7 +124,7 @@ function ramdev_do_options() {
 	<?php
 }
 
-
+/* create an array for checkboxes values and labels */
 function ramdev_services() {
 	$services = array(
 		'dashboard' => array(
@@ -196,8 +167,54 @@ function ramdev_services() {
 	return $services;
 }
 
-/* adding the access to the plugin on the admin panel */
+
+/* adding the access to the plugin page under the "Settings" menu *****************************/
 function ramdev_menu() {
 	add_submenu_page( 'options-general.php', __( 'Remove Admin Menus', 'ram' ), __( 'Remove Admin Menus', 'ram' ), 'administrator', 'ram_dev', 'ram_options_page' );
 }
+/* 
+	hook the previous function to the action admin_menu
+	(Fires before the administration menu loads in the admin) 
+	https://developer.wordpress.org/reference/hooks/admin_menu/
+*/
 add_action( 'admin_menu', 'ramdev_menu' );
+
+
+/* remove or display admin menus depending on the checked options *****************************/
+function remove_admin_menus(){
+	$options = get_option( 'ramdev' );
+
+	if ( isset( $options['dashboard'] ) ) { 
+		remove_menu_page( 'index.php' );
+	}
+	if ( isset( $options['posts'] ) ) { 
+		remove_menu_page( 'edit.php' );
+	}
+	if ( isset( $options['media'] ) ) { 
+		remove_menu_page( 'upload.php' );
+	}
+	if ( isset( $options['pages'] ) ) { 	
+		remove_menu_page( 'edit.php?post_type=page' );
+	}
+	if ( isset( $options['comments'] ) ) { 
+		remove_menu_page( 'edit-comments.php' );
+	}
+	if ( isset( $options['appearence'] ) ) { 
+		remove_menu_page( 'themes.php' );
+	}
+	if ( isset( $options['plugins'] ) ) { 
+		remove_menu_page( 'plugins.php' );
+	}
+	if ( isset( $options['users'] ) ) { 
+		remove_menu_page( 'users.php' );
+	}
+	if ( isset( $options['tools'] ) ) { 
+		remove_menu_page( 'tools.php' );
+	}
+}
+/* 
+	hook the previous function to the action admin_menu
+	(Fires before the administration menu loads in the admin) 
+	https://developer.wordpress.org/reference/hooks/admin_menu/
+*/
+add_action( 'admin_menu', 'remove_admin_menus' );
